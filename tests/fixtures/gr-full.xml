@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<data-set xml:lang="fr" lang="fr">
+<evangelizo>
+    <litugic_t><![CDATA[Δοκιμαστική εορτή]]></litugic_t>
+    <reading_text1_lt><![CDATA[Βιβλίο 1,1.]]></reading_text1_lt>
+    <reading_text1_st><![CDATA[Βιβ 1,1.]]></reading_text1_st>
+    <reading_text1><![CDATA[Δείγμα ανάγνωσης.]]></reading_text1>
+    <reading_text2_lt><![CDATA[Ψαλμός 1,1.]]></reading_text2_lt>
+    <reading_text2_st><![CDATA[Ψλ 1,1.]]></reading_text2_st>
+    <reading_text2><![CDATA[Δείγμα ψαλμού.]]></reading_text2>
+    <reading_text3><![CDATA[]]></reading_text3>
+    <reading_gospel_lt><![CDATA[Ευαγγέλιο 3,1.]]></reading_gospel_lt>
+    <reading_gospel_st><![CDATA[Ευ 3,1.]]></reading_gospel_st>
+    <reading_gospel><![CDATA[Δείγμα ευαγγελίου.]]></reading_gospel>
+    <comment_t><![CDATA[Τίτλος]]></comment_t>
+    <comment_a><![CDATA[Συγγραφέας]]></comment_a>
+    <comment_s><![CDATA[]]></comment_s>
+    <comment><![CDATA[Δείγμα σχολίου.]]></comment>
+    <date><![CDATA[20260815]]></date>
+</evangelizo>
+</data-set>

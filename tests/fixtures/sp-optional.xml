@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<data-set xml:lang="fr" lang="fr">
+<evangelizo>
+    <litugic_t><![CDATA[Feria de prueba]]></litugic_t>
+    <reading_text1_lt><![CDATA[Libro 4,1.]]></reading_text1_lt>
+    <reading_text1_st><![CDATA[Lb 4,1.]]></reading_text1_st>
+    <reading_text1><![CDATA[Solo primera.]]></reading_text1>
+    <reading_text2_lt><![CDATA[Salmo 2,1.]]></reading_text2_lt>
+    <reading_text2_st><![CDATA[Sal 2,1.]]></reading_text2_st>
+    <reading_text2><![CDATA[Solo salmo.]]></reading_text2>
+    <reading_text3_lt><![CDATA[]]></reading_text3_lt>
+    <reading_text3_st><![CDATA[]]></reading_text3_st>
+    <reading_text3><![CDATA[]]></reading_text3>
+    <reading_gospel_lt><![CDATA[Evangelio 5,1.]]></reading_gospel_lt>
+    <reading_gospel_st><![CDATA[Ev 5,1.]]></reading_gospel_st>
+    <reading_gospel><![CDATA[Solo evangelio.]]></reading_gospel>
+    <comment_t><![CDATA[ ]]></comment_t>
+    <comment_a><![CDATA[ ]]></comment_a>
+    <comment_s><![CDATA[ ]]></comment_s>
+    <comment><![CDATA[]]></comment>
+    <date><![CDATA[20260817]]></date>
+</evangelizo>
+</data-set>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<data-set xml:lang="fr" lang="fr">
+<evangelizo>
+    <litugic_t><![CDATA[عيد تجريبي]]></litugic_t>
+    <reading_text1_lt><![CDATA[كتاب ١،١.]]></reading_text1_lt>
+    <reading_text1_st><![CDATA[كت ١،١.]]></reading_text1_st>
+    <reading_text1><![CDATA[نص قراءة تجريبي.]]></reading_text1>
+    <reading_text2_lt><![CDATA[مزمور ١.]]></reading_text2_lt>
+    <reading_text2_st><![CDATA[مز ١.]]></reading_text2_st>
+    <reading_text2><![CDATA[نص مزمور تجريبي.]]></reading_text2>
+    <reading_text3><![CDATA[]]></reading_text3>
+    <reading_gospel_lt><![CDATA[إنجيل ٣،١.]]></reading_gospel_lt>
+    <reading_gospel_st><![CDATA[إن ٣،١.]]></reading_gospel_st>
+    <reading_gospel><![CDATA[نص إنجيل تجريبي.]]></reading_gospel>
+    <comment_t><![CDATA[عنوان]]></comment_t>
+    <comment_a><![CDATA[كاتب]]></comment_a>
+    <comment_s><![CDATA[مصدر]]></comment_s>
+    <comment><![CDATA[نص تعليق تجريبي.]]></comment>
+    <date><![CDATA[20260815]]></date>
+</evangelizo>
+</data-set>

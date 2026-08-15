@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "jonathan.gospel-of-the-day",
+  "name": "Gospel of the Day",
+  "version": "0.1.0",
+  "author": "jonathan",
+  "description": "Daily Gospel readings from Evangelizo.org",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "BarWidget.qml"
+  },
+  "barWidget": {
+    "displayName": "Gospel of the Day",
+    "description": "Daily Gospel readings from Evangelizo.org",
+    "category": "Faith",
+    "allowMultiple": false,
+    "defaultSection": "right",
+    "defaults": {
+      "language": ""
+    },
+    "schema": [
+      {
+        "key": "language",
+        "type": "string",
+        "label": "Language"
+      }
+    ]
+  }
+}

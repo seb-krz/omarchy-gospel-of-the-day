@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<data-set xml:lang="fr" lang="fr">
+<evangelizo>
+    <saint><![CDATA[Santa Prueba]]></saint>
+    <litugic_t><![CDATA[Solemnidad de prueba]]></litugic_t>
+    <reading_text1_lt><![CDATA[Libro primero 1,1-3.]]></reading_text1_lt>
+    <reading_text1_st><![CDATA[1_Pr 1,1-3.]]></reading_text1_st>
+    <reading_text1><![CDATA[Primera lectura de prueba.]]></reading_text1>
+    <reading_text1_audiourl><![CDATA[]]></reading_text1_audiourl>
+    <reading_text2_lt><![CDATA[Salmo 1,1.]]></reading_text2_lt>
+    <reading_text2_st><![CDATA[Sal 1,1.]]></reading_text2_st>
+    <reading_text2><![CDATA[Salmo de prueba.]]></reading_text2>
+    <reading_text2_audiourl><![CDATA[]]></reading_text2_audiourl>
+    <reading_text3_lt><![CDATA[Carta de prueba 2,1-2.]]></reading_text3_lt>
+    <reading_text3_st><![CDATA[Pr 2,1-2.]]></reading_text3_st>
+    <reading_text3><![CDATA[Segunda lectura de prueba.]]></reading_text3>
+    <reading_text3_audiourl><![CDATA[]]></reading_text3_audiourl>
+    <reading_gospel_lt><![CDATA[Evangelio de prueba 3,1-4.]]></reading_gospel_lt>
+    <reading_gospel_st><![CDATA[Ev 3,1-4.]]></reading_gospel_st>
+    <reading_gospel><![CDATA[Evangelio de prueba.]]></reading_gospel>
+    <reading_gospel_audiourl><![CDATA[]]></reading_gospel_audiourl>
+    <comment_t><![CDATA[Título del comentario]]></comment_t>
+    <comment_a><![CDATA[Autor de prueba]]></comment_a>
+    <comment_s><![CDATA[Fuente de prueba]]></comment_s>
+    <comment><![CDATA[Comentario de prueba.]]></comment>
+    <date><![CDATA[20260815]]></date>
+</evangelizo>
+</data-set>

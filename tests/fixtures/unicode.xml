@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<data-set xml:lang="fr" lang="fr">
+<evangelizo>
+    <litugic_t><![CDATA[Año litúrgico: María, niño, corazón]]></litugic_t>
+    <reading_text1_lt><![CDATA[Génesis]]></reading_text1_lt>
+    <reading_text1_st><![CDATA[Gn]]></reading_text1_st>
+    <reading_text1><![CDATA[niño, corazón, año]]></reading_text1>
+    <reading_text2_lt><![CDATA[Salmo]]></reading_text2_lt>
+    <reading_text2_st><![CDATA[Sal]]></reading_text2_st>
+    <reading_text2><![CDATA[señal]]></reading_text2>
+    <reading_text3><![CDATA[]]></reading_text3>
+    <reading_gospel_lt><![CDATA[Lucas]]></reading_gospel_lt>
+    <reading_gospel_st><![CDATA[Lc]]></reading_gospel_st>
+    <reading_gospel><![CDATA[¡feliz!]]></reading_gospel>
+    <comment_t><![CDATA[canción]]></comment_t>
+    <comment_a><![CDATA[José]]></comment_a>
+    <comment_s><![CDATA[]]></comment_s>
+    <comment><![CDATA[oración]]></comment>
+    <date><![CDATA[20260101]]></date>
+</evangelizo>
+</data-set>
