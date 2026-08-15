@@ -3,7 +3,7 @@
   "id": "jonathan.gospel-of-the-day",
   "name": "Gospel of the Day",
   "version": "0.1.0",
-  "author": "jonathan",
+  "author": "Jonathan Montero",
   "description": "Daily Gospel readings from Evangelizo.org",
   "kinds": [
     "bar-widget"
