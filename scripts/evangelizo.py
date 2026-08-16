@@ -8,6 +8,7 @@ import os
 import re
 import ssl
 import sys
+import tempfile
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -20,6 +21,7 @@ HOST = "feed.evangelizo.org"
 READER_PATH = "/v2/reader.php"
 TIMEOUT_SEC = 15
 MAX_BYTES = 512 * 1024
+MAX_LOOKBACK_DAYS = 30
 PROVIDER = "evangelizo.org"
 EXIT_OK = 0
 EXIT_USAGE = 2
@@ -69,6 +71,13 @@ def parse_date(value):
     if re.fullmatch(r"\d{4}-\d{2}-\d{2}", text):
         return datetime.date.fromisoformat(text)
     raise Error("invalid date: %s" % text, EXIT_USAGE)
+
+
+def assert_allowed_date(day, today=None):
+    now = today or datetime.date.today()
+    if day > now or (now - day).days > MAX_LOOKBACK_DAYS:
+        raise Error("invalid date", EXIT_USAGE)
+    return day
 
 
 def compact_date(day):
@@ -268,9 +277,15 @@ def apply_fallbacks(data, lang, day, opener=None):
     return data
 
 
-def read_cache(path):
+def read_cache(path, lang=None, day=None):
+    path = Path(path)
     try:
-        text = Path(path).read_text(encoding="utf-8")
+        if path.is_symlink() or not path.is_file():
+            return None
+        size = path.stat().st_size
+        if size <= 0 or size > MAX_BYTES:
+            return None
+        text = path.read_text(encoding="utf-8")
         data = json.loads(text)
     except (OSError, json.JSONDecodeError, UnicodeError):
         return None
@@ -279,15 +294,33 @@ def read_cache(path):
     for key in ("date", "language", "liturgicalTitle", "readings", "gospel", "commentary", "provider", "fetchedAt"):
         if key not in data:
             return None
+    if lang and normalize_lang(data.get("language")) != lang:
+        return None
+    if day and str(data.get("date") or "") != iso_date(day):
+        return None
     return data
 
 
 def write_cache(path, data):
     path = Path(path)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    tmp = path.with_suffix(".json.tmp")
-    tmp.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    tmp.replace(path)
+    parent = path.parent
+    parent.mkdir(parents=True, exist_ok=True)
+    if parent.is_symlink() or path.is_symlink():
+        raise Error("cache path rejected", EXIT_PARSE)
+    fd, tmp_name = tempfile.mkstemp(prefix=".g.", suffix=".tmp", dir=str(parent))
+    try:
+        os.fchmod(fd, 0o600)
+        with os.fdopen(fd, "w", encoding="utf-8") as handle:
+            json.dump(data, handle, ensure_ascii=False, indent=2)
+            handle.write("\n")
+        os.replace(tmp_name, path)
+        os.chmod(path, 0o600)
+    except Exception:
+        try:
+            os.unlink(tmp_name)
+        except OSError:
+            pass
+        raise
 
 
 def load_day(lang, day, cache_dir, refresh=False, opener=None):
@@ -296,7 +329,7 @@ def load_day(lang, day, cache_dir, refresh=False, opener=None):
         raise Error("invalid language", EXIT_USAGE)
 
     path = cache_path(cache_dir, lang, day)
-    cached = read_cache(path)
+    cached = read_cache(path, lang, day)
     if cached is not None and not refresh:
         return cached
 
@@ -330,7 +363,7 @@ def main(argv=None):
         print("invalid language: %s" % args.lang, file=sys.stderr)
         return EXIT_USAGE
     try:
-        day = parse_date(args.date)
+        day = assert_allowed_date(parse_date(args.date))
         cache_dir = Path(args.cache_dir) if args.cache_dir else default_cache_dir()
         data = load_day(lang, day, cache_dir, refresh=args.refresh)
     except Error as exc:

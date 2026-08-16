@@ -156,7 +156,7 @@ Panel {
     if (fetchProc.running) fetchProc.running = false
     root.loading = true
     root.lastError = ""
-    var command = ["python3", root.pluginFile("scripts/evangelizo.py"), "--lang", code, "--date", root.viewDateKey]
+    var command = [root.pluginFile("scripts/run-helper.sh"), "--lang", code, "--date", root.viewDateKey]
     if (forceRefresh) command.push("--refresh")
     fetchProc.command = command
     fetchProc.running = true
@@ -286,6 +286,7 @@ Panel {
             font.pixelSize: Style.font.title
             font.bold: true
             wrapMode: Text.WordWrap
+            textFormat: Text.PlainText
             horizontalAlignment: root.choosingLanguage ? Text.AlignHCenter : root.contentAlign
           }
 
@@ -579,6 +580,7 @@ Panel {
                 font.pixelSize: Style.font.body
                 font.bold: true
                 wrapMode: Text.WordWrap
+                textFormat: Text.PlainText
                 horizontalAlignment: root.contentAlign
               }
 
@@ -590,6 +592,7 @@ Panel {
                 font.family: root.contentFontFamily
                 font.pixelSize: Style.font.bodySmall
                 wrapMode: Text.WordWrap
+                textFormat: Text.PlainText
                 horizontalAlignment: root.contentAlign
               }
 
@@ -601,6 +604,7 @@ Panel {
                 font.pixelSize: Style.font.body
                 wrapMode: Text.WordWrap
                 lineHeight: 1.35
+                textFormat: Text.PlainText
                 horizontalAlignment: root.contentAlign
               }
             }
@@ -634,6 +638,7 @@ Panel {
               font.pixelSize: Style.font.body
               font.bold: true
               wrapMode: Text.WordWrap
+              textFormat: Text.PlainText
               horizontalAlignment: root.contentAlign
             }
 
@@ -645,6 +650,7 @@ Panel {
               font.family: root.contentFontFamily
               font.pixelSize: Style.font.bodySmall
               wrapMode: Text.WordWrap
+              textFormat: Text.PlainText
               horizontalAlignment: root.contentAlign
             }
 
@@ -657,6 +663,7 @@ Panel {
               font.pixelSize: Style.font.body
               wrapMode: Text.WordWrap
               lineHeight: 1.35
+              textFormat: Text.PlainText
               horizontalAlignment: root.contentAlign
             }
 
@@ -687,6 +694,7 @@ Panel {
               font.pixelSize: Style.font.body
               font.bold: true
               wrapMode: Text.WordWrap
+              textFormat: Text.PlainText
               horizontalAlignment: root.contentAlign
             }
 
@@ -698,6 +706,7 @@ Panel {
               font.family: root.contentFontFamily
               font.pixelSize: Style.font.bodySmall
               wrapMode: Text.WordWrap
+              textFormat: Text.PlainText
               horizontalAlignment: root.contentAlign
             }
 
@@ -710,6 +719,7 @@ Panel {
               font.pixelSize: Style.font.body
               wrapMode: Text.WordWrap
               lineHeight: 1.35
+              textFormat: Text.PlainText
               horizontalAlignment: root.contentAlign
             }
 

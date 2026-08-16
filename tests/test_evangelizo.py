@@ -151,6 +151,38 @@ class SecurityTests(unittest.TestCase):
         self.assertEqual(stdout.getvalue(), "")
         self.assertIn("invalid language", stderr.getvalue())
 
+    def test_cli_rejects_out_of_range_date(self):
+        stdout = io.StringIO()
+        stderr = io.StringIO()
+        with mock.patch("sys.stdout", stdout), mock.patch("sys.stderr", stderr):
+            code = ev.main(["--lang", "SP", "--date", "1999-01-01"])
+        self.assertEqual(code, ev.EXIT_USAGE)
+        self.assertEqual(stdout.getvalue(), "")
+        self.assertIn("invalid date", stderr.getvalue())
+
+    def test_cache_rejects_symlink_oversize_and_mismatch(self):
+        day = datetime.date(2026, 8, 15)
+        with tempfile.TemporaryDirectory() as tmp:
+            good = ev.parse_xml(fixture("sp-full.xml"), "SP", day)
+            path = ev.cache_path(tmp, "SP", day)
+            ev.write_cache(path, good)
+            self.assertEqual(path.stat().st_mode & 0o777, 0o600)
+            self.assertIsNotNone(ev.read_cache(path, "SP", day))
+
+            wrong = dict(good)
+            wrong["language"] = "AM"
+            ev.write_cache(path, wrong)
+            self.assertIsNone(ev.read_cache(path, "SP", day))
+
+            ev.write_cache(path, good)
+            link = Path(tmp) / "SP" / "link.json"
+            link.symlink_to(path)
+            self.assertIsNone(ev.read_cache(link, "SP", day))
+
+            huge = path.parent / "huge.json"
+            huge.write_bytes(b"{" + (b"a" * (ev.MAX_BYTES + 8)) + b"}")
+            self.assertIsNone(ev.read_cache(huge, "SP", day))
+
 
 class CacheAndNetworkTests(unittest.TestCase):
     def opener_for(self, bodies):
