@@ -168,6 +168,7 @@ def parse_xml(raw, lang, day):
         raise Error("missing evangelizo node", EXIT_PARSE)
 
     title = child_text(ev, "litugic_t") or child_text(ev, "liturgic_t")
+    saint = html_to_text(child_text(ev, "saint"))
     xml_date = child_text(ev, "date")
     if xml_date:
         try:
@@ -198,6 +199,7 @@ def parse_xml(raw, lang, day):
         "date": iso_date(day),
         "language": lang,
         "liturgicalTitle": title,
+        "saint": saint,
         "readings": readings,
         "gospel": gospel,
         "commentary": commentary,
@@ -265,6 +267,11 @@ def fetch_type(lang, day, type_name, opener=None):
 def apply_fallbacks(data, lang, day, opener=None):
     if data["liturgicalTitle"] == "":
         data["liturgicalTitle"] = html_to_text(fetch_type(lang, day, "liturgic_t", opener=opener))
+    if data["saint"] == "":
+        try:
+            data["saint"] = html_to_text(fetch_type(lang, day, "saint", opener=opener))
+        except Error:
+            pass
 
     commentary = data["commentary"]
     if commentary["available"]:
@@ -291,7 +298,7 @@ def read_cache(path, lang=None, day=None):
         return None
     if not isinstance(data, dict):
         return None
-    for key in ("date", "language", "liturgicalTitle", "readings", "gospel", "commentary", "provider", "fetchedAt"):
+    for key in ("date", "language", "liturgicalTitle", "saint", "readings", "gospel", "commentary", "provider", "fetchedAt"):
         if key not in data:
             return None
     if lang and normalize_lang(data.get("language")) != lang:

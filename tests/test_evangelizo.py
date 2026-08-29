@@ -52,6 +52,7 @@ class ParseTests(unittest.TestCase):
         self.assertEqual(data["date"], "2026-08-15")
         self.assertEqual(data["language"], "SP")
         self.assertEqual(data["liturgicalTitle"], "Solemnidad de prueba")
+        self.assertEqual(data["saint"], "Santa Prueba")
         self.assertEqual(data["provider"], "evangelizo.org")
         self.assertEqual([item["kind"] for item in data["readings"]], ["first", "psalm", "second"])
         self.assertEqual(data["readings"][0]["reference"], "1_Pr 1,1-3.")
@@ -68,6 +69,7 @@ class ParseTests(unittest.TestCase):
         data = ev.parse_xml(fixture("am-full.xml"), "AM", datetime.date(2026, 8, 15))
         self.assertEqual(data["language"], "AM")
         self.assertEqual(data["liturgicalTitle"], "Test solemnity")
+        self.assertEqual(data["saint"], "Test Saint")
         self.assertEqual([item["kind"] for item in data["readings"]], ["first", "psalm", "second"])
         self.assertEqual(data["readings"][0]["text"], "First reading sample.")
         self.assertEqual(data["gospel"]["text"], "Gospel sample.")
@@ -78,6 +80,7 @@ class ParseTests(unittest.TestCase):
         data = ev.parse_xml(fixture("sp-optional.xml"), "SP", datetime.date(2026, 8, 17))
         self.assertEqual([item["kind"] for item in data["readings"]], ["first", "psalm"])
         self.assertEqual(data["gospel"]["text"], "Solo evangelio.")
+        self.assertEqual(data["saint"], "")
         self.assertFalse(data["commentary"]["available"])
         self.assertEqual(data["commentary"]["text"], "")
 
@@ -293,7 +296,22 @@ class CacheAndNetworkTests(unittest.TestCase):
             self.assertEqual(loaded["commentary"]["author"], "Autor vía endpoint")
             self.assertEqual(loaded["commentary"]["source"], "Fuente vía endpoint")
             self.assertEqual(loaded["commentary"]["title"], "Tema vía endpoint")
+            self.assertEqual(loaded["saint"], "")
             self.assertTrue(loaded["commentary"]["available"])
+
+    def test_saint_fallback(self):
+        day = datetime.date(2026, 8, 16)
+        bodies = {
+            "xml": fixture("sp-comment-fallback.xml"),
+            "liturgic_t": "<font>Título vía endpoint</font>",
+            "comment_a": "<font>Autor vía endpoint</font>",
+            "comment_s": "<font>Fuente vía endpoint</font>",
+            "comment_t": "<font>Tema vía endpoint</font>",
+            "saint": '<font dir="ltr">San Agustín<br />obispo y doctor</font>',
+        }
+        with tempfile.TemporaryDirectory() as tmp:
+            loaded = ev.load_day("SP", day, tmp, opener=self.opener_for(bodies))
+            self.assertEqual(loaded["saint"], "San Agustín\nobispo y doctor")
 
 
 def urllib_parse_qs(url):

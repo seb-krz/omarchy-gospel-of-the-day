@@ -107,6 +107,7 @@ function emptyDay() {
     date: "",
     language: "",
     liturgicalTitle: "",
+    saint: "",
     readings: [],
     gospel: emptyReading("gospel"),
     commentary: emptyCommentary(),
@@ -165,6 +166,7 @@ function parsePayload(raw) {
     date: asText(data.date),
     language: normalizeLanguage(data.language),
     liturgicalTitle: asText(data.liturgicalTitle),
+    saint: asText(data.saint),
     readings: readings,
     gospel: normalizeReading(data.gospel, "gospel"),
     commentary: normalizeCommentary(data.commentary),
@@ -187,6 +189,49 @@ function commentaryByline(commentary) {
   return author || source
 }
 
+function formatReading(entry) {
+  var item = entry && typeof entry === "object" ? entry : {}
+  var parts = []
+  var title = asText(item.title)
+  var reference = asText(item.reference)
+  var text = asText(item.text)
+  if (title !== "") parts.push(title)
+  if (reference !== "" && reference !== title) parts.push(reference)
+  if (text !== "") parts.push(text)
+  return parts.join("\n")
+}
+
+function copyText(day, tabIndex) {
+  if (!day || typeof day !== "object") return ""
+  var blocks = []
+  var title = asText(day.liturgicalTitle)
+  var saint = asText(day.saint)
+  if (title !== "") blocks.push(title)
+  if (saint !== "") blocks.push(saint)
+  var n = Number(tabIndex)
+  if (n === 0) {
+    var readings = day.readings
+    if (readings && typeof readings.length === "number") {
+      for (var i = 0; i < readings.length; i++) {
+        var block = formatReading(readings[i])
+        if (block !== "") blocks.push(block)
+      }
+    }
+  } else if (n === 2) {
+    var commentary = normalizeCommentary(day.commentary)
+    var note = []
+    var byline = commentaryByline(commentary)
+    if (commentary.title !== "") note.push(commentary.title)
+    if (byline !== "") note.push(byline)
+    if (commentary.text !== "") note.push(commentary.text)
+    if (note.length > 0) blocks.push(note.join("\n"))
+  } else {
+    var gospel = formatReading(day.gospel)
+    if (gospel !== "") blocks.push(gospel)
+  }
+  return blocks.join("\n\n")
+}
+
 if (typeof module !== "undefined") {
   module.exports = {
     LANGUAGES: LANGUAGES,
@@ -201,6 +246,8 @@ if (typeof module !== "undefined") {
     parsePayload: parsePayload,
     tabId: tabId,
     commentaryByline: commentaryByline,
+    formatReading: formatReading,
+    copyText: copyText,
     MAX_LOOKBACK_DAYS: MAX_LOOKBACK_DAYS,
     isoDate: isoDate,
     addDays: addDays,

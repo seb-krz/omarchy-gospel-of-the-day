@@ -8,8 +8,10 @@ Readings come from **[Evangelizo.org](https://www.evangelizo.org)** (Evangelio d
 
 ## Features
 
-- Latin cross on the Omarchy bar
+- Latin cross on the Omarchy bar; the panel opens under the icon
+- Liturgical title plus the saint or celebration of the day
 - Readings, Gospel, and Commentary as separate tabs
+- Select and copy the readings, or copy the open tab
 - Roman Ordinary Calendar languages: Español, English (US), Français, Italiano, Deutsch, Português, العربية, Polski, Nederlands, Ελληνικά, Malagasy
 - Arabic text is shown right-to-left
 - Previous / next day (up to 30 days) and a Today button
@@ -40,6 +42,7 @@ Click ✝ to open the panel. The first time, pick a language. After that:
 | ← → | Previous or next day |
 | Today | Jump to today |
 | Refresh | Fetch again, skip cache |
+| Copy / `c` | Copy the open tab |
 | Middle-click ✝ | Refresh |
 | `1` `2` `3` | Readings, Gospel, Commentary |
 | `j` / `k` | Scroll |

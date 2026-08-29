@@ -24,6 +24,7 @@ const parsed = Model.parsePayload(JSON.stringify({
   date: "2026-08-15",
   language: "sp",
   liturgicalTitle: "Prueba",
+  saint: "Santa Prueba",
   readings: [{ kind: "first", title: "T", reference: "R", text: "Texto" }, { kind: "second", title: "", reference: "", text: "" }],
   gospel: { kind: "gospel", title: "G", reference: "Ev", text: "Evangelio" },
   commentary: { available: true, title: "C", author: "A", source: "S", text: "Nota" },
@@ -31,9 +32,14 @@ const parsed = Model.parsePayload(JSON.stringify({
   fetchedAt: "2026-08-15T00:00:00+00:00"
 }))
 assert.strictEqual(parsed.language, "SP")
+assert.strictEqual(parsed.saint, "Santa Prueba")
 assert.strictEqual(parsed.readings.length, 1)
 assert.strictEqual(parsed.gospel.text, "Evangelio")
 assert.strictEqual(parsed.commentary.author, "A")
+assert.strictEqual(Model.copyText(parsed, 0), "Prueba\n\nSanta Prueba\n\nT\nR\nTexto")
+assert.strictEqual(Model.copyText(parsed, 1), "Prueba\n\nSanta Prueba\n\nG\nEv\nEvangelio")
+assert.strictEqual(Model.copyText(parsed, 2), "Prueba\n\nSanta Prueba\n\nC\nA · S\nNota")
+assert.strictEqual(Model.copyText(null, 1), "")
 assert.strictEqual(Model.parsePayload(""), null)
 assert.strictEqual(Model.parsePayload("{"), null)
 assert.strictEqual(Model.tabId(1), "gospel")

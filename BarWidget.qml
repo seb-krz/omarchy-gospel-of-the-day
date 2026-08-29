@@ -57,6 +57,10 @@ BarWidget {
       root.injectPanel()
       Qt.callLater(root.injectPanel)
     }
+    onStatusChanged: {
+      if (status === Loader.Error)
+        console.warn("jonathan.gospel-of-the-day panel failed to load")
+    }
   }
 
   IpcHandler {

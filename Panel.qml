@@ -22,7 +22,7 @@ Panel {
   readonly property bool hasLanguage: configuredLanguage !== ""
   readonly property var languages: Model.languageList()
   readonly property bool rtl: Model.isRtlLanguage(configuredLanguage)
-  readonly property int contentAlign: rtl ? Text.AlignRight : Text.AlignHCenter
+  readonly property int contentAlign: rtl ? Text.AlignRight : Text.AlignLeft
 
   readonly property int innerWidth: Math.max(Style.space(348), bodyScroll && bodyScroll.width > 0 ? bodyScroll.width : Style.space(348))
   readonly property int rowHeight: Style.space(36)
@@ -44,6 +44,7 @@ Panel {
 
   readonly property var tabLabels: ["Readings", "Gospel", "Commentary"]
   readonly property string liturgicalTitle: day ? String(day.liturgicalTitle || "") : ""
+  readonly property string saint: day ? String(day.saint || "") : ""
   readonly property string dayDate: day ? String(day.date || "") : ""
   readonly property var readings: day && day.readings ? day.readings : []
   readonly property var gospel: day && day.gospel ? day.gospel : { kind: "gospel", title: "", reference: "", text: "" }
@@ -180,6 +181,13 @@ Panel {
     if (root.hasLanguage) root.loadDay(root.configuredLanguage, true)
   }
 
+  function copyVisible() {
+    if (root.choosingLanguage || !root.day) return
+    var text = Model.copyText(root.day, root.activeTab)
+    if (text === "") return
+    Quickshell.execDetached(["wl-copy", "--", text])
+  }
+
   function applyFetch(exitCode) {
     var raw = String(fetchOut.text || "")
     var parsed = Model.parsePayload(raw)
@@ -221,7 +229,7 @@ Panel {
     owner: root.barIdentity
     bar: root.bar
     open: root.opened
-    centerOnBar: true
+    centerOnBar: false
     focusTarget: keyCatcher
     contentWidth: panel.fittedContentWidth(Style.space(560))
     contentHeight: panel.fittedContentHeight(Math.max(bodyColumn.implicitHeight, Style.space(400)), panel.availableCardHeight)
@@ -251,6 +259,7 @@ Panel {
         else if (t === "]" ) root.moveDay(1)
         else if (t === "t" || t === "T") root.goToToday()
         else if (t === "r" || t === "R") root.refresh()
+        else if (t === "c" || t === "C") root.copyVisible()
       }
 
       Flickable {
@@ -288,6 +297,20 @@ Panel {
             wrapMode: Text.WordWrap
             textFormat: Text.PlainText
             horizontalAlignment: root.choosingLanguage ? Text.AlignHCenter : root.contentAlign
+          }
+
+          Text {
+            width: root.innerWidth
+            anchors.horizontalCenter: parent.horizontalCenter
+            visible: !root.choosingLanguage && root.saint !== ""
+            height: visible ? implicitHeight : 0
+            text: root.saint
+            color: Qt.darker(root.contentForeground, 1.35)
+            font.family: root.contentFontFamily
+            font.pixelSize: Style.font.body
+            wrapMode: Text.WordWrap
+            textFormat: Text.PlainText
+            horizontalAlignment: root.contentAlign
           }
 
           Item {
@@ -367,7 +390,7 @@ Panel {
 
             Rectangle {
               anchors.left: parent.left
-              anchors.right: refreshButton.left
+              anchors.right: copyButton.visible ? copyButton.left : refreshButton.left
               anchors.rightMargin: Style.space(8)
               height: parent.height
               radius: Style.cornerRadius
@@ -395,6 +418,20 @@ Panel {
                   else root.showLanguagePicker()
                 }
               }
+            }
+
+            PanelActionButton {
+              id: copyButton
+              visible: root.hasLanguage && !root.choosingLanguage && !!root.day
+              anchors.right: refreshButton.left
+              anchors.rightMargin: Style.space(4)
+              anchors.verticalCenter: parent.verticalCenter
+              iconText: "󰆏"
+              tooltipText: "Copy"
+              foreground: root.contentForeground
+              fontFamily: root.contentFontFamily
+              enabled: !!root.day
+              onClicked: root.copyVisible()
             }
 
             PanelActionButton {
@@ -571,7 +608,7 @@ Panel {
               anchors.horizontalCenter: parent.horizontalCenter
               spacing: Style.space(6)
 
-              Text {
+              SelectableText {
                 width: parent.width
                 visible: entry.title !== "" || entry.reference !== ""
                 text: entry.title !== "" ? entry.title : entry.reference
@@ -579,32 +616,25 @@ Panel {
                 font.family: root.contentFontFamily
                 font.pixelSize: Style.font.body
                 font.bold: true
-                wrapMode: Text.WordWrap
-                textFormat: Text.PlainText
                 horizontalAlignment: root.contentAlign
               }
 
-              Text {
+              SelectableText {
                 width: parent.width
                 visible: entry.title !== "" && entry.reference !== "" && entry.reference !== entry.title
                 text: entry.reference
                 color: Qt.darker(root.contentForeground, 1.45)
                 font.family: root.contentFontFamily
                 font.pixelSize: Style.font.bodySmall
-                wrapMode: Text.WordWrap
-                textFormat: Text.PlainText
                 horizontalAlignment: root.contentAlign
               }
 
-              Text {
+              SelectableText {
                 width: parent.width
                 text: entry.text
                 color: root.contentForeground
                 font.family: root.contentFontFamily
                 font.pixelSize: Style.font.body
-                wrapMode: Text.WordWrap
-                lineHeight: 1.35
-                textFormat: Text.PlainText
                 horizontalAlignment: root.contentAlign
               }
             }
@@ -629,7 +659,7 @@ Panel {
             spacing: Style.space(6)
             height: visible ? implicitHeight : 0
 
-            Text {
+            SelectableText {
               width: parent.width
               visible: root.gospel.title !== "" || root.gospel.reference !== ""
               text: root.gospel.title !== "" ? root.gospel.title : root.gospel.reference
@@ -637,33 +667,26 @@ Panel {
               font.family: root.contentFontFamily
               font.pixelSize: Style.font.body
               font.bold: true
-              wrapMode: Text.WordWrap
-              textFormat: Text.PlainText
               horizontalAlignment: root.contentAlign
             }
 
-            Text {
+            SelectableText {
               width: parent.width
               visible: root.gospel.title !== "" && root.gospel.reference !== "" && root.gospel.reference !== root.gospel.title
               text: root.gospel.reference
               color: Qt.darker(root.contentForeground, 1.45)
               font.family: root.contentFontFamily
               font.pixelSize: Style.font.bodySmall
-              wrapMode: Text.WordWrap
-              textFormat: Text.PlainText
               horizontalAlignment: root.contentAlign
             }
 
-            Text {
+            SelectableText {
               width: parent.width
               visible: root.gospel.text !== ""
               text: root.gospel.text
               color: root.contentForeground
               font.family: root.contentFontFamily
               font.pixelSize: Style.font.body
-              wrapMode: Text.WordWrap
-              lineHeight: 1.35
-              textFormat: Text.PlainText
               horizontalAlignment: root.contentAlign
             }
 
@@ -685,7 +708,7 @@ Panel {
             spacing: Style.space(8)
             height: visible ? implicitHeight : 0
 
-            Text {
+            SelectableText {
               width: parent.width
               visible: root.commentary.title !== ""
               text: root.commentary.title
@@ -693,33 +716,26 @@ Panel {
               font.family: root.contentFontFamily
               font.pixelSize: Style.font.body
               font.bold: true
-              wrapMode: Text.WordWrap
-              textFormat: Text.PlainText
               horizontalAlignment: root.contentAlign
             }
 
-            Text {
+            SelectableText {
               width: parent.width
               visible: Model.commentaryByline(root.commentary) !== ""
               text: Model.commentaryByline(root.commentary)
               color: Qt.darker(root.contentForeground, 1.45)
               font.family: root.contentFontFamily
               font.pixelSize: Style.font.bodySmall
-              wrapMode: Text.WordWrap
-              textFormat: Text.PlainText
               horizontalAlignment: root.contentAlign
             }
 
-            Text {
+            SelectableText {
               width: parent.width
               visible: root.commentary.available
               text: root.commentary.text
               color: root.contentForeground
               font.family: root.contentFontFamily
               font.pixelSize: Style.font.body
-              wrapMode: Text.WordWrap
-              lineHeight: 1.35
-              textFormat: Text.PlainText
               horizontalAlignment: root.contentAlign
             }
 
