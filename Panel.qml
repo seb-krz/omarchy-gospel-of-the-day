@@ -334,7 +334,6 @@ Panel {
             width: root.innerWidth
             anchors.horizontalCenter: parent.horizontalCenter
             visible: !root.choosing && root.saint !== ""
-            height: visible ? implicitHeight : 0
             text: root.saint
             color: Qt.darker(root.contentForeground, 1.35)
             font.family: root.contentFontFamily
@@ -399,7 +398,6 @@ Panel {
             width: root.innerWidth
             anchors.horizontalCenter: parent.horizontalCenter
             visible: root.hasLanguage && !root.viewingToday
-            height: visible ? implicitHeight : 0
             text: "Today"
             color: Style.hoverStateColor(root.contentForeground, Color.accent)
             font.family: root.contentFontFamily
@@ -531,7 +529,6 @@ Panel {
             width: root.innerWidth
             anchors.horizontalCenter: parent.horizontalCenter
             spacing: Style.space(4)
-            height: visible ? implicitHeight : 0
 
             Repeater {
               model: root.choosing ? root.pickerModel.length : 0
@@ -636,7 +633,6 @@ Panel {
             width: root.innerWidth
             anchors.horizontalCenter: parent.horizontalCenter
             visible: !root.choosing && root.loading && !root.day
-            height: visible ? implicitHeight : 0
             text: "Loading…"
             color: Qt.darker(root.contentForeground, 1.4)
             font.family: root.contentFontFamily
@@ -649,7 +645,6 @@ Panel {
             width: root.innerWidth
             anchors.horizontalCenter: parent.horizontalCenter
             spacing: Style.space(8)
-            height: visible ? implicitHeight : 0
 
             Text {
               width: parent.width
@@ -725,7 +720,6 @@ Panel {
             width: root.innerWidth
             anchors.horizontalCenter: parent.horizontalCenter
             visible: !root.choosing && root.activeTab === 0 && !root.loading && root.day && root.readings.length === 0
-            height: visible ? implicitHeight : 0
             text: "No readings today"
             color: Qt.darker(root.contentForeground, 1.4)
             font.family: root.contentFontFamily
@@ -738,7 +732,6 @@ Panel {
             width: root.innerWidth
             anchors.horizontalCenter: parent.horizontalCenter
             spacing: Style.space(6)
-            height: visible ? implicitHeight : 0
 
             SelectableText {
               width: parent.width
@@ -787,7 +780,6 @@ Panel {
             width: root.innerWidth
             anchors.horizontalCenter: parent.horizontalCenter
             spacing: Style.space(8)
-            height: visible ? implicitHeight : 0
 
             SelectableText {
               width: parent.width
